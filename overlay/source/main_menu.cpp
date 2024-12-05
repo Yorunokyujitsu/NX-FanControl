@@ -29,7 +29,7 @@ tsl::elm::Element* MainMenu::createUI()
 
     auto list = new tsl::elm::List();
 
-    list->addItem(new tsl::elm::CategoryHeader("팬 쿨링 활성화 ", true));
+    list->addItem(new tsl::elm::CategoryHeader("팬 쿨링", true));
     this->_enabledBtn->setStateChangedListener([this](bool state)
     {
 	    if (state)
