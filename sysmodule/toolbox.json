@@ -1,5 +1,5 @@
 {
-  "name": "SysFanContol",
+  "name": "시스템 쿨링",
   "tid": "00FF0000B378D640",
   "requires_reboot": false
 }
