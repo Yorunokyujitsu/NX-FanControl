@@ -40,11 +40,11 @@ include $(DEVKITPRO)/libnx/switch_rules
 APP_TITLE	:=	NX-FanControl
 APP_VERSION :=	1.0.3
 
-TARGET		:=	$(notdir $(CURDIR))
+TARGET		:=	$(APP_TITLE)
 BUILD		:=	build
-SOURCES		:=	source
+SOURCES		:=	source lib/libultrahand/libultra/source
 DATA		:=	data
-INCLUDES	:=	include lib/libtesla/include ../lib/libfancontrol/include
+INCLUDES	:=	include lib/libultrahand/libultra/include lib/libultrahand/libtesla/include ../lib/libfancontrol/include
 
 NO_ICON		:=  1
 
@@ -58,12 +58,24 @@ CFLAGS	:=	-g -Wall -O2 -ffunction-sections \
 
 CFLAGS	+=	$(INCLUDE) -D__SWITCH__
 
+# Enable appearance overriding
+UI_OVERRIDE_PATH := /config/NX-FanControl/
+CFLAGS += -DUI_OVERRIDE_PATH="\"$(UI_OVERRIDE_PATH)\""
+
+# For theme / wallpaper loading in GUI class method (add to project if theme does not appear)
+INITIALIZE_IN_GUI_DIRECTIVE := 1
+CFLAGS += -DINITIALIZE_IN_GUI_DIRECTIVE=$(INITIALIZE_IN_GUI_DIRECTIVE)
+
+# Disable fstream
+NO_FSTREAM_DIRECTIVE := 1
+CFLAGS += -DNO_FSTREAM_DIRECTIVE=$(NO_FSTREAM_DIRECTIVE)
+
 CXXFLAGS	:= $(CFLAGS) -fno-exceptions -std=c++20
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= -lnx ../../lib/libfancontrol/lib/libfancontrol.a
+LIBS	:= -lcurl -lz -lzzip -lmbedtls -lmbedx509 -lmbedcrypto -ljansson -lnx ../../lib/libfancontrol/lib/libfancontrol.a
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
